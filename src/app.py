@@ -66,13 +66,11 @@ def get_member(id):
 
 @app.route('/member/<int:id>', methods=['DELETE'])
 def delete_member(id):
-    result = jackson_family.delete_member(id)
-    
-    if "done" in result:
-        return jsonify(result), 200
+    if id in jackson_family:
+        del jackson_family[id]
+        return jsonify({'msg': f'The member with ID {id} was removed'}), 200
     else:
-        return jsonify(result), 404
-
+        return jsonify({'error': f'The member with ID {id} was removed'}), 404
 
 
 
