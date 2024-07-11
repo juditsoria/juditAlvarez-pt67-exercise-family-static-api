@@ -43,6 +43,7 @@ class FamilyStructure:
         # fill this method and update the return
          if "id" not in member:
             member["id"] = self._generateId()
+            member["last_name"] = self.last_name
             self._members.append(member)
             return member
 
@@ -56,13 +57,20 @@ class FamilyStructure:
 
 
     def get_member(self, id):
-        member_dict = {member["id"]: member for member in self._members}
-        return member_dict.get(id)
+        for member in self._members:
+            if member["id"] == id:
+                return member
+        return None
 
 
-
+def update_member(self, id, updates):
+        for member in self._members:
+            if member["id"] == id:
+                member.update(updates)
+                return member
+        return None
 
     
     # this method is done, it returns a list with all the family members
-    def get_all_members(self):
+def get_all_members(self):
         return self._members

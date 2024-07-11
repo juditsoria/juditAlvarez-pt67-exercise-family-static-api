@@ -66,16 +66,24 @@ def get_member(id):
 
 @app.route('/member/<int:id>', methods=['DELETE'])
 def delete_member(id):
-    if id in jackson_family:
-        del jackson_family[id]
-        return jsonify({'msg': f'The member with ID {id} was removed'}), 200
+    if jackson_family.delete_member(id):
+        return jsonify({"done": True}), 200
     else:
-        return jsonify({'error': f'The member with ID {id} was removed'}), 404
-
+        return jsonify({"message": "Member not found"}), 404
 
 
     
-
+@app.route('/member/<int:id>', methods=['PUT'])
+def update_member(id):
+    request_data = request.json
+    updates = {key: value for key, value in request_data.items() if key in ["first_name", "age", "lucky_numbers"]}
+    updated_member = jackson_family.update_member(id, updates)
+    if updated_member:
+        return jsonify(updated_member), 200
+    else:
+        return jsonify({"message": "Member not found"}), 404
+    
+    
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
